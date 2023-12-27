@@ -17,13 +17,12 @@ export function read(path) {
 
 /**
  * Logs the ms a function takes.
- * @param {Function} f - The function that it timed.
+ * @param {string} name - The name of the timer.
+ * @param {Function} f - The function that is to be timed.
  */
-export function time(f) {
-  const before = Date.now();
+export function time(name, f) {
+  console.time(name);
   f();
-  const after = Date.now();
-
-  console.log(`Total time: ${(after - before)} ms`)
+  console.timeEnd(name);
 }
 
