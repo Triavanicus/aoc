@@ -1,6 +1,6 @@
-import { read, time } from "./utils.js";
+import { read, run } from "./utils.js";
 
-time("day1", () => {
+function day1() {
   const data = read("./d1.txt");
   const lines = data.split("\n").filter((line) => line != "");
   const numMap = {
@@ -31,7 +31,7 @@ time("day1", () => {
     for (let i = 0; i <= line.length && firstNum === null; i++) {
       const str = line.substring(0, i);
       for (const key of Object.keys(numMap)) {
-        if(str.includes(key)) {
+        if (str.includes(key)) {
           firstNum = numMap[key];
           break;
         }
@@ -41,7 +41,7 @@ time("day1", () => {
     for (let i = line.length - 1; i >= 0 && lastNum === null; i--) {
       const str = line.substring(i, line.length);
       for (const key of Object.keys(numMap)) {
-        if(str.includes(key)) {
+        if (str.includes(key)) {
           lastNum = numMap[key];
           break;
         }
@@ -50,8 +50,8 @@ time("day1", () => {
 
     return firstNum * 10 + lastNum;
   });
-  
-  let result = numbers.reduce((acc, n) => acc + n);
-  console.log(numbers);
-  console.log("Result:", result);
-});
+
+  return numbers.reduce((acc, n) => acc + n);
+}
+
+run(day1);

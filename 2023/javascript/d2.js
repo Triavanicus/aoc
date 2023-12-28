@@ -1,8 +1,7 @@
-import { read, time } from "./utils.js";
+import { read, run } from "./utils.js";
 
-time("day 2", () => {
+function day2() {
   const data = read("./d2.txt");
-  const maxColors = { 'red': 12, 'green': 13, 'blue': 14 };
 
   let result = data.split("\n")
     .filter(s => s != "")
@@ -23,5 +22,7 @@ time("day 2", () => {
     }).reduce((acc, game) => acc + Object.values(game[1])
       .reduce((acc, n) => n * acc), 0);
 
-  console.log("Result: ", result);
-});
+  return result;
+}
+
+run(day2);

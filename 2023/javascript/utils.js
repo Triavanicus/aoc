@@ -16,13 +16,17 @@ export function read(path) {
 }
 
 /**
- * Logs the ms a function takes.
- * @param {string} name - The name of the timer.
- * @param {Function} f - The function that is to be timed.
+ * Runs the function, while also displaying the time it took, and the result.
+ * @param {Function} f - The function that is to be ran.
  */
-export function time(name, f) {
-  console.time(name);
-  f();
-  console.timeEnd(name);
+export function run(f) {
+  const name = f.name;
+  const timerName = `${name} time`;
+
+  console.time(timerName);
+  let result = f();
+  console.timeEnd(timerName);
+
+  console.log(`${name} result: ${result}`);
 }
 
