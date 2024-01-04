@@ -26,7 +26,6 @@ function day3() {
     }, [])
     .filter((symbol) => symbol.char === "*")
     .map((symbol) => {
-      // TODO: get all of the numbers adjacent to this star
       const getNumber = (index) => {
         let a = notSymbols.indexOf(data[index]);
         if (a < 0 || a >= 10) {
