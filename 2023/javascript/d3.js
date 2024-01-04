@@ -20,48 +20,50 @@ function day3() {
     .split("")
     .reduce((symbols, char, index) => {
       if (notSymbols.indexOf(char) === -1) {
-        symbols.push(index);
+        symbols.push({ char: char, index: index });
       }
       return symbols;
     }, [])
-    .reduce((acc, i) => {
-      acc.push(
-        adjacent
-          .filter((n) => i + n >= 0 && i + n < data.length)
-          .map((n) => i + n)
-          .filter(
-            (n) =>
-              notSymbols.indexOf(data[n]) >= 0 &&
-              notSymbols.indexOf(data[n]) < 10,
-          ),
-      );
-      return acc;
-    }, [])
-    .flat()
-    .sort((a, b) => a - b)
-    .filter((n, i, arr) => {
-      if (i + 1 >= arr.length || (arr[i + 1] !== n + 1 && arr[i + 1] !== n))
-        return true;
-      return false;
+    .filter((symbol) => symbol.char === "*")
+    .map((symbol) => {
+      // TODO: get all of the numbers adjacent to this star
+      const getNumber = (index) => {
+        let a = notSymbols.indexOf(data[index]);
+        if (a < 0 || a >= 10) {
+          return null;
+        }
+        let start = index;
+        let end = index;
+
+        const isNum = (index) => {
+          const val = notSymbols.indexOf(data[index]);
+          return val > -1 && val < 10;
+        };
+
+        while (isNum(start--));
+        while (isNum(end++));
+        start += 2;
+        end -= 1;
+        return { start: start, end: end, number: data.slice(start, end) };
+      };
+
+      let numbers = adjacent
+        .map((offset) => {
+          return getNumber(symbol.index + offset);
+        })
+        .filter((number) => number !== null)
+        .reduce((numbers, number) => {
+          numbers["i" + number.start] = number.number;
+          return numbers;
+        }, {});
+      return {
+        numbers: Object.values(numbers),
+        ...symbol,
+      };
     })
-    .map((n) => {
-      let min = n;
-      let max = n;
-      for (
-        ;
-        notSymbols.indexOf(data[min - 1]) !== -1 &&
-        notSymbols.indexOf(data[min - 1]) < 10;
-        min--
-      );
-      for (
-        ;
-        notSymbols.indexOf(data[max]) !== -1 &&
-        notSymbols.indexOf(data[max]) < 10;
-        max++
-      );
-      return +data.slice(min, max);
-    })
-    .reduce((acc, n) => acc + n);
+    .filter((val) => val.numbers.length === 2)
+    .map((val) => val.numbers[0] * val.numbers[1])
+    .reduce((acc, num) => acc + num);
 }
 
 run(day3);
